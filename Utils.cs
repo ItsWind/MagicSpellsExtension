@@ -10,6 +10,14 @@ namespace PaladinMagic
 {
     public static class Utils
     {
+        public static bool CheckFormationsOnSameSide(Formation f1, Formation f2)
+        {
+            bool nullCheck = f1 != null && f2 != null && f1.Team != null && f2.Team != null;
+            if (!nullCheck) return false;
+
+            return f1.Team.Side.Equals(f2.Team.Side);
+        }
+
         public static Agent? GetAgentClosestToLocation(Vec3 location)
         {
             Agent? agent = null;
@@ -51,12 +59,20 @@ namespace PaladinMagic
                 agent.Health += mod;
         }
 
+        public static bool IsMissionWeaponSpell(MissionWeapon weapon)
+        {
+            if (weapon.Item.ItemType.Equals(ItemTypeEnum.Thrown) && weapon.Item.Name.ToString().Contains("Spell "))
+                return true;
+            return false;
+        }
+
         public static bool DoesMissionWeaponHeal(MissionWeapon weapon)
         {
             if (weapon.Item.ItemType.Equals(ItemTypeEnum.Thrown) && weapon.Item.Name.ToString().Contains("Healing"))
                 return true;
             return false;
         }
+
         public static void PrintToMessages(string str, int r, int g, int b)
         {
             float[] newValues = { (float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f };

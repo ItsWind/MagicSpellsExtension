@@ -12,8 +12,15 @@ namespace PaladinMagic
         private static Dictionary<string, Action<Agent>> spellTypes = new Dictionary<string, Action<Agent>>
         {
             { "BaseHeal",
-                (affectedAgent) => {
+                (affectedAgent) => 
+                {
                     Utils.ModAgentHealth(affectedAgent, SpellsManager.GetBaseHealAmt());
+                }
+            },
+            { "BaseFear",
+                (affectedAgent) =>
+                {
+                    affectedAgent.ChangeMorale(-25.0f);
                 }
             }
         };
@@ -39,6 +46,12 @@ namespace PaladinMagic
                 (affectedAgent) =>
                 {
                     SpellsManager.AddActiveSpell(affectedAgent, "BaseHeal", 15.0f, 2.0f);
+                }
+            },
+            { "Spell Fear",
+                (affectedAgent) =>
+                {
+                    SpellsManager.AddActiveSpell(affectedAgent, "BaseFear", 0, 0, false);
                 }
             }
         };

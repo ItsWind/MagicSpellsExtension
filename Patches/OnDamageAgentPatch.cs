@@ -19,18 +19,23 @@ namespace PaladinMagic.Patches
         [HarmonyPostfix]
         public static float Postfix(float original)
         {
-            if (Utils.DoesMissionWeaponHeal(weaponUsed))
+            if (Utils.IsMissionWeaponSpell(weaponUsed))
             {
-                Utils.PrintToMessages("HEALING SPELL USED");
                 Agent? affectedAgent = Utils.GetAgentClosestToLocation(attackInfo.VictimAgentPosition);
-                if (affectedAgent == null)
+                bool agentsOnSameSide = Utils.CheckFormationsOnSameSide(attackInfo.AttackerFormation, attackInfo.VictimFormation);
+
+                if (Utils.DoesMissionWeaponHeal(weaponUsed))
+                {
+                    if (agentsOnSameSide)
+                        SpellsManager.SpellFunctions[weaponUsed.Item.Name.ToString()](affectedAgent);
                     return 0.0f;
-
-                bool nullCheck = attackInfo.AttackerFormation != null && attackInfo.VictimFormation != null && attackInfo.AttackerFormation.Team != null && attackInfo.VictimFormation.Team != null;
-                if (nullCheck && attackInfo.AttackerFormation.Team.Side.Equals(attackInfo.VictimFormation.Team.Side))
-                    SpellsManager.SpellFunctions[weaponUsed.Item.Name.ToString()](affectedAgent);
-
-                return 0.0f;
+                }
+                else
+                {
+                    if (!agentsOnSameSide)
+                        SpellsManager.SpellFunctions[weaponUsed.Item.Name.ToString()](affectedAgent);
+                    return original;
+                }
             }
             return original;
         }
