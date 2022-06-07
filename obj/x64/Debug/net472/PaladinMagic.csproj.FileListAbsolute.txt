@@ -1,0 +1,10 @@
+C:\Program Files (x86)\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\PaladinMagic\x64\Debug\net472\PaladinMagic.dll
+C:\Program Files (x86)\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\PaladinMagic\x64\Debug\net472\PaladinMagic.pdb
+C:\Users\stric\source\repos\PaladinMagic\PaladinMagic\obj\x64\Debug\net472\PaladinMagic.csproj.AssemblyReference.cache
+C:\Users\stric\source\repos\PaladinMagic\PaladinMagic\obj\x64\Debug\net472\PaladinMagic.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\stric\source\repos\PaladinMagic\PaladinMagic\obj\x64\Debug\net472\PaladinMagic.AssemblyInfoInputs.cache
+C:\Users\stric\source\repos\PaladinMagic\PaladinMagic\obj\x64\Debug\net472\PaladinMagic.AssemblyInfo.cs
+C:\Users\stric\source\repos\PaladinMagic\PaladinMagic\obj\x64\Debug\net472\PaladinMagic.csproj.CoreCompileInputs.cache
+C:\Users\stric\source\repos\PaladinMagic\PaladinMagic\obj\x64\Debug\net472\PaladinMagic.csproj.CopyComplete
+C:\Users\stric\source\repos\PaladinMagic\PaladinMagic\obj\x64\Debug\net472\PaladinMagic.dll
+C:\Users\stric\source\repos\PaladinMagic\PaladinMagic\obj\x64\Debug\net472\PaladinMagic.pdb
