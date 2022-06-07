@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using System;
 using TaleWorlds.MountAndBlade;
 
 namespace PaladinMagic.Patches
@@ -22,6 +23,16 @@ namespace PaladinMagic.Patches
             if (Utils.IsMissionWeaponSpell(weaponUsed))
             {
                 Agent? affectedAgent = Utils.GetAgentClosestToLocation(attackInfo.VictimAgentPosition);
+                Action<Agent> funcToDo;
+                try
+                {
+                    funcToDo = SpellsManager.SpellFunctions[weaponUsed.Item.Name.ToString()];
+                }
+                catch (Exception e)
+                {
+                    return original;
+                }
+
                 bool agentsOnSameSide = Utils.CheckFormationsOnSameSide(attackInfo.AttackerFormation, attackInfo.VictimFormation);
 
                 if (Utils.DoesMissionWeaponHeal(weaponUsed))

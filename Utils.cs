@@ -39,7 +39,7 @@ namespace PaladinMagic
         {
             foreach (KeyValuePair<Agent, float> kvp in agentsToCancelEffectedCheer.ToList())
             {
-                if (kvp.Value + dt >= 1.5f)
+                if (kvp.Value + dt >= 1.25f)
                 {
                     kvp.Key.CancelCheering();
                     agentsToCancelEffectedCheer.Remove(kvp.Key);
