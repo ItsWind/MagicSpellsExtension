@@ -10,25 +10,6 @@ namespace PaladinMagic
 {
     public static class Utils
     {
-        public static bool CheckFormationsOnSameSide(Formation f1, Formation f2)
-        {
-            bool nullCheck = f1 != null && f2 != null && f1.Team != null && f2.Team != null;
-            if (!nullCheck) return false;
-
-            return f1.Team.Side.Equals(f2.Team.Side);
-        }
-
-        public static Agent? GetAgentClosestToLocation(Vec3 location)
-        {
-            Agent? agent = null;
-            foreach (Agent a in Mission.Current.GetAgentsInRange(location.AsVec2, 0.1f))
-            {
-                agent = a;
-                break;
-            }
-            return agent;
-        }
-
         private static Dictionary<Agent, float> agentsToCancelEffectedCheer = new();
         public static void DoAgentEffectedCheer(Agent agent)
         {

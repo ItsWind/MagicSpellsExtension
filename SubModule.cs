@@ -20,12 +20,14 @@ namespace PaladinMagic
             {
                 Utils.CheckCancelAgentCheers(dt);
                 SpellsManager.DoActiveSpellEffects(dt);
+                AgentFXManager.DoTick(dt);
             }
         }
 
         public override void OnMissionBehaviorInitialize(Mission mission)
         {
-            SpellsManager.ClearActiveSpells();
+            SpellsManager.ClearAllActiveSpells();
+            AgentFXManager.ClearAllAgentFX();
         }
     }
 }

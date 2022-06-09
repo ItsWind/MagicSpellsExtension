@@ -3,7 +3,7 @@ using TaleWorlds.MountAndBlade;
 
 namespace PaladinMagic
 {
-    public class Spell
+    public class SpellData
     {
         public Agent AffectedAgent;
         public Action<Agent> RepeatingEffect;
@@ -13,7 +13,7 @@ namespace PaladinMagic
         private float effectTimer;
         private float timer;
 
-        public Spell(Agent agent, Action<Agent> func, float repeatTime, float effectEvery = 1.0f, bool positiveEffect = true)
+        public SpellData(Agent agent, Action<Agent> func, float repeatTime, float effectEvery = 1.0f, bool positiveEffect = true, string fxName = "")
         {
             this.AffectedAgent = agent;
             this.RepeatingEffect = func;
@@ -22,6 +22,9 @@ namespace PaladinMagic
 
             if (positiveEffect)
                 Utils.DoAgentEffectedCheer(this.AffectedAgent);
+            if (!fxName.Equals(""))
+                AgentFXManager.DoAgentFX(this.AffectedAgent, fxName, this.RepeatFor < 1.5f ? 1.5f : this.RepeatFor);
+
             this.doEffect();
         }
 
