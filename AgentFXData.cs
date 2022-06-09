@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -18,8 +19,8 @@ namespace MagicSpells
 
 		private float timer = 0.0f;
 
-		GameEntity fxObj;
-		ParticleSystem part;
+		//Dictionary<int, ParticleSystem> parts = new();
+		Dictionary<GameEntity, Vec3> fxObjs = new();
 
 		public AgentFXData(Agent agent, string fxName, float time)
         {
@@ -33,30 +34,36 @@ namespace MagicSpells
 
 		public void Tick(float dt)
         {
-			if (fxObj != null)
-            {
-				fxObj.SetLocalPosition(AffectedAgent.Position);
-            }
+			foreach (KeyValuePair<GameEntity, Vec3> kvp in fxObjs)
+				kvp.Key.SetLocalPosition(AffectedAgent.Position + kvp.Value);
 
 			timer += dt;
 			if (timer >= RunForTime)
-            {
-				AgentFXManager.RemoveAgentFX(AffectedAgent);
-            }
+				this.RemoveFX();
         }
 
 		public void RemoveFX()
 		{
-			Utils.PrintToMessages("attempting removal of FX bone part");
-			fxObj.Remove(0);
+			foreach (KeyValuePair<GameEntity, Vec3> kvp in fxObjs.ToList())
+				kvp.Key.Remove(0);
+			AgentFXManager.ActiveFXData[AffectedAgent].Remove(this);
         }
+
+		private void createFXObj()
+        {
+			GameEntity fxObj = GameEntity.CreateEmpty(Mission.Current.Scene, false);
+			Vec3 fxObjPos = new Vec3((float)MBRandom.RandomInt(-25, 25) / 100.0f, (float)MBRandom.RandomInt(-25, 25) / 100.0f, (float)MBRandom.RandomInt(20, 150) / 100.0f);
+
+			MatrixFrame matrixFrame = new MatrixFrame(Mat3.Identity, new Vec3());
+			ParticleSystem part = ParticleSystem.CreateParticleSystemAttachedToEntity(FXName, fxObj, ref matrixFrame);
+
+			fxObjs[fxObj] = fxObjPos;
+		}
 
 		public void StartFX()
         {
-			fxObj = GameEntity.CreateEmpty(Mission.Current.Scene, false);
-
-			MatrixFrame matrixFrame = new MatrixFrame(Mat3.Identity, new Vec3(0.0f, 0.0f, 0.0f, -1.75f));
-			part = ParticleSystem.CreateParticleSystemAttachedToEntity(FXName, fxObj, ref matrixFrame);
+			for(int i = 0; i < 10; i++)
+				createFXObj();
         }
     }
 }

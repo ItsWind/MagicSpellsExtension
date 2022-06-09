@@ -9,27 +9,16 @@ namespace MagicSpells
 {
     public static class AgentFXManager
     {
-        public static Dictionary<Agent, AgentFXData> ActiveFXData = new Dictionary<Agent, AgentFXData>();
-
-        public static AgentFXData? GetAgentFXData(Agent agent)
-        {
-            AgentFXData data;
-            try
-            {
-                data = ActiveFXData[agent];
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-            return data;
-        }
+        public static Dictionary<Agent, List<AgentFXData>> ActiveFXData = new Dictionary<Agent, List<AgentFXData>>();
 
         public static void DoTick(float dt)
         {
-            foreach (KeyValuePair<Agent, AgentFXData> pair in ActiveFXData.ToList())
+            foreach (KeyValuePair<Agent, List<AgentFXData>> pair in ActiveFXData.ToList())
             {
-                pair.Value.Tick(dt);
+                foreach (AgentFXData data in pair.Value.ToList())
+                {
+                    data.Tick(dt);
+                }
             }
         }
 
@@ -40,19 +29,26 @@ namespace MagicSpells
 
         public static void RemoveAgentFX(Agent agent)
         {
-            AgentFXData? data = GetAgentFXData(agent);
-            if (data != null)
+            if (ActiveFXData.ContainsKey(agent))
             {
-                Utils.PrintToMessages("fx data found trying to remove in manager");
-                data.RemoveFX();
-                Utils.PrintToMessages(ActiveFXData.Remove(agent).ToString());
+                foreach (AgentFXData data in ActiveFXData[agent].ToList())
+                {
+                    data.RemoveFX();
+                }
             }
         }
 
         public static void DoAgentFX(Agent agent, string fxName, float until)
         {
-            RemoveAgentFX(agent);
-            ActiveFXData[agent] = new AgentFXData(agent, fxName, until);
+            try
+            {
+                ActiveFXData[agent].Add(new AgentFXData(agent, fxName, until));
+            }
+            catch (KeyNotFoundException e)
+            {
+                ActiveFXData[agent] = new List<AgentFXData>();
+                ActiveFXData[agent].Add(new AgentFXData(agent, fxName, until));
+            }
         }
     }
 }
