@@ -8,7 +8,7 @@
     <Nullable>enable</Nullable>
     <ModuleName>$(MSBuildProjectName)</ModuleName>
     <GameFolder>$(BANNERLORD_GAME_DIR)</GameFolder>
-    <BaseOutputPath>C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\PaladinMagic</BaseOutputPath>
+    <BaseOutputPath>C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\MagicSpells</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -93,6 +93,6 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy &quot;C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\PaladinMagic\x64\Debug\net472\PaladinMagic.dll&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\PaladinMagic\bin\Win64_Shipping_Client\PaladinMagic.dll&quot;" />
+    <Exec Command="copy &quot;C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\MagicSpells\x64\Debug\net472\MagicSpells.dll&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\MagicSpells\bin\Win64_Shipping_Client\MagicSpells.dll&quot;" />
   </Target>
 </Project>

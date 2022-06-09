@@ -6,32 +6,10 @@ using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static TaleWorlds.Core.ItemObject;
 
-namespace PaladinMagic
+namespace MagicSpells
 {
     public static class Utils
     {
-        private static Dictionary<Agent, float> agentsToCancelEffectedCheer = new();
-        public static void DoAgentEffectedCheer(Agent agent)
-        {
-            agentsToCancelEffectedCheer[agent] = 0.0f;
-            agent.HandleCheer(0);
-        }
-        public static void CheckCancelAgentCheers(float dt)
-        {
-            foreach (KeyValuePair<Agent, float> kvp in agentsToCancelEffectedCheer.ToList())
-            {
-                if (kvp.Value + dt >= 1.25f)
-                {
-                    kvp.Key.CancelCheering();
-                    agentsToCancelEffectedCheer.Remove(kvp.Key);
-                }
-                else
-                {
-                    agentsToCancelEffectedCheer[kvp.Key] = kvp.Value + dt;
-                }
-            }
-        }
-
         public static void ModAgentHealth(Agent agent, float mod)
         {
             if (agent.Health + mod > agent.HealthLimit)

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 
-namespace PaladinMagic
+namespace MagicSpells
 {
     public static class AgentFXManager
     {

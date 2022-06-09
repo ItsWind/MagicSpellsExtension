@@ -7,7 +7,7 @@ using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
-namespace PaladinMagic
+namespace MagicSpells
 {
     public class AgentFXData
     {

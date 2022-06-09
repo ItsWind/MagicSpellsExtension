@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using TaleWorlds.InputSystem;
 
-namespace PaladinMagic
+namespace MagicSpells
 {
     public class Config
     {
-        private string configFilePath = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.Length - 26) + "Modules\\PaladinMagic\\config.txt";
+        private string configFilePath = AppDomain.CurrentDomain.BaseDirectory.Substring(0, AppDomain.CurrentDomain.BaseDirectory.Length - 26) + "Modules\\MagicSpells\\config.txt";
 
         private Dictionary<string, double> configValues = new();
         private readonly string configFileString =

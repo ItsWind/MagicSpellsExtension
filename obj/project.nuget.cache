@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "52Anyt00VxBe1vAv4urdP1cJURkzity31148ZuLZgA1A8+mG5R+4MgI89anktMdzYfBRF9lpTlYYDzREqsuJtA==",
+  "dgSpecHash": "GSMDdlCXLERxOhquf+UlUlG4d3vbswK+k9iqRJeyoIMY9yrG3/4GkJXQHVSqfOTBiL6nlFLINBqDVj9zQ8FL5w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\stric\\source\\repos\\PaladinMagic\\PaladinMagic\\PaladinMagic.csproj",
+  "projectFilePath": "C:\\Users\\stric\\source\\repos\\MagicSpells\\MagicSpells\\MagicSpells.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\stric\\.nuget\\packages\\bannerlord.buildresources\\1.0.0.39\\bannerlord.buildresources.1.0.0.39.nupkg.sha512",
     "C:\\Users\\stric\\.nuget\\packages\\isexternalinit\\1.0.1\\isexternalinit.1.0.1.nupkg.sha512",

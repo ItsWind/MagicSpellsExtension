@@ -1,0 +1,12 @@
+C:\Program Files (x86)\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\PaladinMagic\x64\Debug\net472\MagicSpells.dll
+C:\Program Files (x86)\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\PaladinMagic\x64\Debug\net472\MagicSpells.pdb
+C:\Users\stric\source\repos\MagicSpells\MagicSpells\obj\x64\Debug\net472\MagicSpells.csproj.AssemblyReference.cache
+C:\Users\stric\source\repos\MagicSpells\MagicSpells\obj\x64\Debug\net472\MagicSpells.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\stric\source\repos\MagicSpells\MagicSpells\obj\x64\Debug\net472\MagicSpells.AssemblyInfoInputs.cache
+C:\Users\stric\source\repos\MagicSpells\MagicSpells\obj\x64\Debug\net472\MagicSpells.AssemblyInfo.cs
+C:\Users\stric\source\repos\MagicSpells\MagicSpells\obj\x64\Debug\net472\MagicSpells.csproj.CoreCompileInputs.cache
+C:\Users\stric\source\repos\MagicSpells\MagicSpells\obj\x64\Debug\net472\MagicSpells.csproj.CopyComplete
+C:\Users\stric\source\repos\MagicSpells\MagicSpells\obj\x64\Debug\net472\MagicSpells.dll
+C:\Users\stric\source\repos\MagicSpells\MagicSpells\obj\x64\Debug\net472\MagicSpells.pdb
+C:\Program Files (x86)\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\MagicSpells\x64\Debug\net472\MagicSpells.dll
+C:\Program Files (x86)\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\MagicSpells\x64\Debug\net472\MagicSpells.pdb

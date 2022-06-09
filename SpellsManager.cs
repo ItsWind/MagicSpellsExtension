@@ -5,7 +5,7 @@ using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
-namespace PaladinMagic
+namespace MagicSpells
 {
     public static class SpellsManager
     {
@@ -16,13 +16,19 @@ namespace PaladinMagic
             { "BaseHeal",
                 (affectedAgent) => 
                 {
-                    Utils.ModAgentHealth(affectedAgent, SpellsManager.GetBaseHealAmt());
+                    Utils.ModAgentHealth(affectedAgent, 10.0f);
                 }
             },
             { "BaseFear",
                 (affectedAgent) =>
                 {
                     affectedAgent.ChangeMorale(-25.0f);
+                }
+            },
+            { "BaseSlow",
+                (affectedAgent) =>
+                {
+                    affectedAgent.SetMaximumSpeedLimit(1.0f, false);
                 }
             }
         };
@@ -32,7 +38,7 @@ namespace PaladinMagic
             { "Spell Healing Bolt",
                 (affectedAgent) =>
                 {
-                    SpellsManager.AddActiveSpell(affectedAgent, "BaseHeal", 0, 0, true, "psys_campfire");
+                    SpellsManager.AddActiveSpell(affectedAgent, "BaseHeal", 0, 0, "psys_campfire");
                 }
             },
             { "Spell Mass Healing",
@@ -40,37 +46,38 @@ namespace PaladinMagic
                 {
                     foreach (Agent a in Mission.Current.GetNearbyAllyAgents(affectedAgent.Position.AsVec2, 10.0f, affectedAgent.Team))
                     {
-                        SpellsManager.AddActiveSpell(a, "BaseHeal", 0, 0, true, "psys_campfire");
+                        SpellsManager.AddActiveSpell(a, "BaseHeal", 0, 0, "psys_campfire");
                     }
                 }
             },
             { "Spell Healing Aura",
                 (affectedAgent) =>
                 {
-                    SpellsManager.AddActiveSpell(affectedAgent, "BaseHeal", 15.0f, 2.0f, true, "psys_campfire");
+                    SpellsManager.AddActiveSpell(affectedAgent, "BaseHeal", 15.0f, 2.0f, "psys_campfire");
                 }
             },
             { "Spell Fear",
                 (affectedAgent) =>
                 {
-                    SpellsManager.AddActiveSpell(affectedAgent, "BaseFear", 0, 0, false, "psys_campfire");
+                    SpellsManager.AddActiveSpell(affectedAgent, "BaseFear", 0, 0, "psys_campfire");
+                }
+            },
+            { "Spell Slow",
+                (affectedAgent) =>
+                {
+                    SpellsManager.AddActiveSpell(affectedAgent, "BaseSlow", 5.0f, 0.1f, "psys_campfire");
                 }
             }
         };
-
-        public static float GetBaseHealAmt()
-        {
-            return (float)SubModule.Config.GetKeyValue("baseHealAmount");
-        }
 
         public static void ClearAllActiveSpells()
         {
             activeSpells.Clear();
         }
 
-        public static void AddActiveSpell(Agent affectedAgent, string spellType, float until, float effectEvery = 1.0f, bool positiveEffect = true, string fxName = "")
+        public static void AddActiveSpell(Agent affectedAgent, string spellType, float until, float effectEvery = 1.0f, string fxName = "")
         {
-            activeSpells.Add(new SpellData(affectedAgent, spellTypes[spellType], until, effectEvery, positiveEffect, fxName));
+            activeSpells.Add(new SpellData(affectedAgent, spellTypes[spellType], until, effectEvery, fxName));
         }
 
         public static void DoActiveSpellEffects(float dt)

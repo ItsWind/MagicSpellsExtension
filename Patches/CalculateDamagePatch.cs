@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using TaleWorlds.MountAndBlade;
 
-namespace PaladinMagic.Patches
+namespace MagicSpells.Patches
 {
     [HarmonyPatch(typeof(SandBox.GameComponents.SandboxAgentApplyDamageModel), nameof(SandBox.GameComponents.SandboxAgentApplyDamageModel.CalculateDamage))]
     internal class CalculateDamagePatch

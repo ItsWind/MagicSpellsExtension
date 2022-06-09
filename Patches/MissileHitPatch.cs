@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 
-namespace PaladinMagic.Patches
+namespace MagicSpells.Patches
 {
     [HarmonyPatch(typeof(Mission), "MissileHitCallback")]
     internal class MissileHitPatch

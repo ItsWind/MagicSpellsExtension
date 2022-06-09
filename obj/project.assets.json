@@ -305,11 +305,11 @@
   "project": {
     "version": "0.0.1",
     "restore": {
-      "projectUniqueName": "C:\\Users\\stric\\source\\repos\\PaladinMagic\\PaladinMagic\\PaladinMagic.csproj",
-      "projectName": "PaladinMagic",
-      "projectPath": "C:\\Users\\stric\\source\\repos\\PaladinMagic\\PaladinMagic\\PaladinMagic.csproj",
+      "projectUniqueName": "C:\\Users\\stric\\source\\repos\\MagicSpells\\MagicSpells\\MagicSpells.csproj",
+      "projectName": "MagicSpells",
+      "projectPath": "C:\\Users\\stric\\source\\repos\\MagicSpells\\MagicSpells\\MagicSpells.csproj",
       "packagesPath": "C:\\Users\\stric\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\stric\\source\\repos\\PaladinMagic\\PaladinMagic\\obj\\",
+      "outputPath": "C:\\Users\\stric\\source\\repos\\MagicSpells\\MagicSpells\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
