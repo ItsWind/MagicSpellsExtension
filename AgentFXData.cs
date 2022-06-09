@@ -12,6 +12,7 @@ namespace MagicSpells
 {
     public class AgentFXData
     {
+		// wtf is wrong with the indentation on github wtf is going on bro
         public Agent AffectedAgent;
 		public Skeleton AffectedAgentSkeleton;
         public string FXName;
@@ -19,7 +20,6 @@ namespace MagicSpells
 
 		private float timer = 0.0f;
 
-		//Dictionary<int, ParticleSystem> parts = new();
 		Dictionary<GameEntity, Vec3> fxObjs = new();
 
 		public AgentFXData(Agent agent, string fxName, float time)
