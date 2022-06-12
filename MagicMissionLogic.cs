@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MagicSpells.DataHolders;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,12 @@ namespace MagicSpells
     {
         public override void OnMissionTick(float dt)
         {
-            SpellsManager.DoActiveSpellEffects(dt);
-            AgentFXManager.DoTick(dt);
+            SubModule.AgentsTick(dt);
+        }
+
+        protected override void OnEndMission()
+        {
+            
         }
     }
 }

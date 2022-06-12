@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MagicSpells.DataHolders;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
@@ -10,6 +11,32 @@ namespace MagicSpells
 {
     public static class Utils
     {
+        public static EffectData? GetSpellEffectData(Agent agent, string spellName)
+        {
+            switch (spellName)
+            {
+                case "Spell Healing Bolt":
+                    return new EffectData(agent, "psys_campfire", (affectedAgent) =>
+                    {
+                        Utils.PrintToMessages("healing bolt healing");
+                        Utils.ModAgentHealth(affectedAgent, 10.0f);
+                    }, 1.0f);
+                case "Spell Healing Aura":
+                    return new EffectData(agent, "psys_campfire", (affectedAgent) =>
+                    {
+                        Utils.PrintToMessages("healing aura healing");
+                        Utils.ModAgentHealth(affectedAgent, 10.0f);
+                    }, 15.0f, 2.0f);
+                case "Spell Mass Healing":
+                    return new EffectData(agent, "psys_campfire", (affectedAgent) =>
+                    {
+                        Utils.PrintToMessages("mass healing");
+                    }, 15.0f, 2.0f, 2.0f);
+                default:
+                    return null;
+            }
+        }
+
         public static void ModAgentHealth(Agent agent, float mod)
         {
             if (agent.Health + mod > agent.HealthLimit)
@@ -42,5 +69,10 @@ namespace MagicSpells
         {
             InformationManager.DisplayMessage(new InformationMessage(str));
         }
+
+        public static sbyte[] FXBoneIndices = new sbyte[]
+        {
+            0
+        };
     }
 }
