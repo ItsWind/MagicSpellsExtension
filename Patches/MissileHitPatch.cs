@@ -13,11 +13,30 @@ namespace MagicSpells.Patches
     [HarmonyPatch(typeof(Mission), "MissileHitCallback")]
     internal class MissileHitPatch
     {
-        private static void addEffectWithNoEnemyEffect(Agent attacker, Agent victim, MissionWeapon weapon, EffectData data)
+        enum SpellType
         {
-            if (Utils.DoesMissionWeaponHeal(weapon) == attacker.Team.Side.Equals(victim.Team.Side))
-                SubModule.AddEffectToAgent(victim, data);
+            Direct,
+            AOE
         }
+
+        private static Dictionary<string, SpellType> spellTypes = new Dictionary<string, SpellType>
+        {
+            { "Spell Mass Healing",
+                SpellType.AOE
+            },
+            { "Spell Fear",
+                SpellType.AOE
+            },
+            { "Spell Slow",
+                SpellType.AOE
+            },
+            { "Spell Healing Bolt",
+                SpellType.Direct
+            },
+            { "Spell Healing Aura",
+                SpellType.Direct
+            }
+        };
 
         [HarmonyPostfix]
         private static void Postfix(Mission __instance, ref AttackCollisionData collisionData, Agent attacker, Agent victim, Vec3 missilePosition)
@@ -26,25 +45,33 @@ namespace MagicSpells.Patches
             MissionWeapon weaponUsed = missiles[collisionData.AffectorWeaponSlotOrMissileIndex].Weapon;
             if (Utils.IsMissionWeaponSpell(weaponUsed))
             {
-                EffectData? spellEffectData;
+                string weaponUsedName = weaponUsed.Item.Name.ToString();
+                SpellType type = SpellType.Direct;
+
                 try
                 {
-                    spellEffectData = Utils.GetSpellEffectData(victim, weaponUsed.Item.Name.ToString());
+                    type = spellTypes[weaponUsedName];
                 }
-                catch (KeyNotFoundException e)
+                catch (KeyNotFoundException) { }
+
+                switch (type)
                 {
-                    Utils.PrintToMessages("Spell function not found");
-                    return;
-                }
-                
-                if (spellEffectData.AOERadius == 0.0f && victim != null)
-                {
-                    addEffectWithNoEnemyEffect(attacker, victim, weaponUsed, spellEffectData);
-                }
-                else if (missilePosition != null && spellEffectData.AOERadius > 0.0f)
-                {
-                    foreach (Agent agent in Mission.Current.GetNearbyAgents(missilePosition.AsVec2, spellEffectData.AOERadius))
-                        addEffectWithNoEnemyEffect(attacker, agent, weaponUsed, spellEffectData);
+                    case SpellType.Direct:
+                        {
+                            if (victim == null)
+                                return;
+
+                            SubModule.AddEffectToAgent(attacker, victim, weaponUsedName, Utils.DoesMissionWeaponHeal(weaponUsed));
+                            break;
+                        }
+                    case SpellType.AOE:
+                        {
+                            if (missilePosition == null)
+                                return;
+
+                            SubModule.AddEffectToAgentsNear(attacker, missilePosition, weaponUsedName, Utils.DoesMissionWeaponHeal(weaponUsed));
+                            break;
+                        }
                 }
             }
         }

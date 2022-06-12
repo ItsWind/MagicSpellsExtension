@@ -9,22 +9,22 @@ namespace MagicSpells.DataHolders
 {
     public class EffectData
     {
-        public Agent AffectedAgent;
+        public Agent Attacker;
+        public Agent Victim;
         public string FXName;
         public Action<Agent> PerformFunc;
         public float TimeLeft;
-        public float AOERadius;
 
         private float repeatEvery;
 
-        public EffectData(Agent agent, string fxName, Action<Agent> func, float until, float repeat = 1.0f, float aoeRadius = 0.0f)
+        public EffectData(Agent attacker, Agent victim, string fxName, Action<Agent> func, float until = 0.0f, float repeat = 0.0f)
         {
-            AffectedAgent = agent;
+            Attacker = attacker;
+            Victim = victim;
             FXName = fxName;
             PerformFunc = func;
             TimeLeft = until;
             repeatEvery = repeat;
-            AOERadius = aoeRadius;
         }
 
         private float repeatTimer = 0.0f;
@@ -34,13 +34,13 @@ namespace MagicSpells.DataHolders
             if (repeatTimer >= repeatEvery)
             {
                 repeatTimer = 0.0f;
-                PerformFunc(AffectedAgent);
+                PerformFunc(Victim);
             }
 
             TimeLeft -= dt;
             if (TimeLeft <= 0.0f)
             {
-                SubModule.ActiveAgentData[AffectedAgent].RemoveEffect(this);
+                SubModule.RemoveEffectFromAgent(Victim, this);
             }
         }
     }
