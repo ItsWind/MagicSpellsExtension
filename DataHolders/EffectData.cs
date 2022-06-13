@@ -2,7 +2,6 @@
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.Library;
-using TaleWorlds.Core;
 
 namespace MagicSpells.DataHolders
 {
@@ -15,11 +14,13 @@ namespace MagicSpells.DataHolders
         public float TimeLeft;
         public Action<Agent>? StopFunc;
 
+        private bool sndLoops;
+        private SoundEvent? sndEvent;
         private GameEntity fxObj;
         private float repeatEvery;
         
-        public EffectData(Agent attacker, Agent victim, string fxName, Action<Agent> func, float until = 2.5f, float repeat = 0.0f,
-            Action<Agent>? stopFunc = null)
+        public EffectData(Agent attacker, Agent victim, string fxName, Action<Agent> func, string soundString = "", bool soundLoops = false,
+            float until = 2.5f, float repeat = 0.0f, Action<Agent>? stopFunc = null)
         {
             Attacker = attacker;
             Victim = victim;
@@ -29,10 +30,15 @@ namespace MagicSpells.DataHolders
             repeatEvery = repeat;
             StopFunc = stopFunc;
 
-            int evtIdFromString = SoundEvent.GetEventIdFromString("magicspells/effect/heal");
-            Utils.PrintToMessages(evtIdFromString.ToString());
-            SoundEvent evt = SoundEvent.CreateEvent(evtIdFromString, Mission.Current.Scene);
-            Utils.PrintToMessages(evt.PlayInPosition(victim.Position + new Vec3(0, 0, 1f)).ToString());
+            if (soundString != "")
+            {
+                sndLoops = soundLoops;
+                int sndEventIdFromString = SoundEvent.GetEventIdFromString(soundString);
+                sndEvent = SoundEvent.CreateEvent(sndEventIdFromString, Mission.Current.Scene);
+                sndEvent.PlayInPosition(victim.Position);
+            }
+            else
+                sndEvent = null;
         }
 
         private void Init()
@@ -47,6 +53,13 @@ namespace MagicSpells.DataHolders
         private float repeatTimer = 0.0f;
         public void PerformTick(float dt)
         {
+            if (sndEvent != null)
+            {
+                sndEvent.SetPosition(Victim.Position);
+                if (sndLoops && !sndEvent.IsPlaying())
+                    sndEvent.Play();
+            }
+
             if (fxObj == null)
                 Init();
 
@@ -64,6 +77,8 @@ namespace MagicSpells.DataHolders
             {
                 if (StopFunc != null)
                     StopFunc(Victim);
+                if (sndEvent != null)
+                    sndEvent.Release();
                 fxObj.Remove(0);
                 SubModule.RemoveEffectFromAgent(Victim, this);
             }

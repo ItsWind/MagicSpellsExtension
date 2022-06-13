@@ -84,28 +84,28 @@ namespace MagicSpells
                     return new EffectData(attacker, victim, "psys_bug_fly_1", (affectedAgent) =>
                     {
                         Utils.ModAgentHealth(affectedAgent, 10.0f);
-                    });
+                    }, "magicspells/effect/heal", true);
                 case "Spell Healing Aura":
                     return new EffectData(attacker, victim, "psys_bug_fly_1", (affectedAgent) =>
                     {
                         Utils.ModAgentHealth(affectedAgent, 10.0f);
-                    }, 15.0f, 2.0f);
+                    }, "magicspells/effect/heal", true, 15.0f, 2.0f);
                 case "Spell Mass Healing":
                     return new EffectData(attacker, victim, "psys_bug_fly_1", (affectedAgent) =>
                     {
                         Utils.ModAgentHealth(affectedAgent, 10.0f);
-                    });
+                    }, "magicspells/effect/heal", true);
                 case "Spell Fear":
                     return new EffectData(attacker, victim, "main_menu_fast_smoke", (affectedAgent) =>
                     {
                         affectedAgent.SetMorale(affectedAgent.GetMorale() - 10.0f);
-                    });
+                    }, "magicspells/effect/heal", true);
                 case "Spell Slow":
                     return new EffectData(attacker, victim, "sea_side_water_splash", (affectedAgent) =>
                     {
                         SavedVarsManager.AddAgentVar(affectedAgent, "originalMaxMoveSpeed", affectedAgent.GetMaximumSpeedLimit());
                         affectedAgent.SetMaximumSpeedLimit(1.0f, false);
-                    }, 5.0f, 0.1f, (affectedAgent) =>
+                    }, "magicspells/effect/heal", true, 5.0f, 0.1f, (affectedAgent) =>
                     {
                         float? setTo = (float)SavedVarsManager.UseAgentVar(affectedAgent, "originalMaxMoveSpeed");
                         if (setTo != null)
