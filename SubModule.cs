@@ -97,13 +97,13 @@ namespace MagicSpells
                     {
                         Utils.PrintToMessages("mass healing");
                         Utils.ModAgentHealth(affectedAgent, 10.0f);
-                    }, 0, 0);
+                    });
                 case "Spell Fear":
                     return new EffectData(attacker, victim, "psys_campfire", (affectedAgent) =>
                     {
                         Utils.PrintToMessages("fear");
                         affectedAgent.SetMorale(affectedAgent.GetMorale() - 10.0f);
-                    }, 0, 0);
+                    });
                 case "Spell Slow":
                     return new EffectData(attacker, victim, "psys_campfire", (affectedAgent) =>
                     {
