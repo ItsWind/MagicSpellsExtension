@@ -18,7 +18,8 @@ namespace MagicSpells
 
         protected override void OnEndMission()
         {
-            
+            SubModule.ActiveAgentEffects.Clear();
+            SavedVarsManager.ClearAllVars();
         }
     }
 }

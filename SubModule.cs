@@ -12,7 +12,6 @@ namespace MagicSpells
     public class SubModule : MBSubModuleBase
     {
         //public static Config Config = new Config();
-        //public static Dictionary<Agent, AgentEffectData> ActiveAgentData = new();
         public static Dictionary<Agent, List<EffectData>> ActiveAgentEffects = new();
 
         protected override void OnSubModuleLoad()
@@ -22,8 +21,6 @@ namespace MagicSpells
         
         public override void OnMissionBehaviorInitialize(Mission mission)
         {
-            SubModule.ActiveAgentEffects.Clear();
-
             mission.AddMissionBehavior(new MagicMissionLogic());
         }
 
@@ -49,7 +46,12 @@ namespace MagicSpells
 
             if (victim.IsHuman)
             {
-                if (needsSameSide == attacker.Team.Side.Equals(victim.Team.Side))
+                bool agentsOnSameSide = attacker.Team.Side.Equals(victim.Team.Side);
+                Utils.PrintToMessages(agentsOnSameSide.ToString());
+                Utils.PrintToMessages(needsSameSide.ToString());
+                bool canAddEffect = needsSameSide == agentsOnSameSide;
+                Utils.PrintToMessages(canAddEffect.ToString());
+                if (canAddEffect)
                 {
                     try
                     {
@@ -108,8 +110,14 @@ namespace MagicSpells
                     return new EffectData(attacker, victim, "psys_campfire", (affectedAgent) =>
                     {
                         Utils.PrintToMessages("slow");
+                        SavedVarsManager.AddAgentVar(affectedAgent, "originalMaxMoveSpeed", affectedAgent.GetMaximumSpeedLimit());
                         affectedAgent.SetMaximumSpeedLimit(1.0f, false);
-                    }, 5.0f, 0.1f);
+                    }, 5.0f, 0.1f, (affectedAgent) =>
+                    {
+                        float? setTo = (float)SavedVarsManager.UseAgentVar(affectedAgent, "originalMaxMoveSpeed");
+                        if (setTo != null)
+                            affectedAgent.SetMaximumSpeedLimit((float)setTo, false);
+                    });
                 default:
                     return null;
             }
