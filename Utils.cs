@@ -1,6 +1,7 @@
 ﻿using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static TaleWorlds.Core.ItemObject;
+using static TaleWorlds.MountAndBlade.Agent;
 
 namespace MagicSpells
 {

@@ -36,10 +36,5 @@ namespace MagicSpells
                 return null;
             }
         }
-
-        public static void ClearAllVars()
-        {
-            SavedVars.Clear();
-        }
     }
 }

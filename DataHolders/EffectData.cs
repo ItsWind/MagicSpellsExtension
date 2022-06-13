@@ -2,6 +2,7 @@
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.Library;
+using TaleWorlds.Core;
 
 namespace MagicSpells.DataHolders
 {
@@ -17,7 +18,7 @@ namespace MagicSpells.DataHolders
         private GameEntity fxObj;
         private float repeatEvery;
         
-        public EffectData(Agent attacker, Agent victim, string fxName, Action<Agent> func, float until = 1.5f, float repeat = 0.0f,
+        public EffectData(Agent attacker, Agent victim, string fxName, Action<Agent> func, float until = 2.5f, float repeat = 0.0f,
             Action<Agent>? stopFunc = null)
         {
             Attacker = attacker;
@@ -27,9 +28,14 @@ namespace MagicSpells.DataHolders
             TimeLeft = until;
             repeatEvery = repeat;
             StopFunc = stopFunc;
+
+            int evtIdFromString = SoundEvent.GetEventIdFromString("magicspells/effect/heal");
+            Utils.PrintToMessages(evtIdFromString.ToString());
+            SoundEvent evt = SoundEvent.CreateEvent(evtIdFromString, Mission.Current.Scene);
+            Utils.PrintToMessages(evt.PlayInPosition(victim.Position + new Vec3(0, 0, 1f)).ToString());
         }
 
-        public void Init()
+        private void Init()
         {
             PerformFunc(Victim);
 
@@ -63,14 +69,29 @@ namespace MagicSpells.DataHolders
             }
         }
 
+        private bool fxGoingUp = false;
         private float fxElevation = 0.5f;
-        private float fxSpeed = 7.0f;
+        private float fxSpeed = 7.5f;
         private float fxRadius = 0.5f;
         private float fxAngle;
         private void setFXObjPos(float dt)
         {
+            if (fxGoingUp)
+            {
+                fxElevation += dt;
+                if (fxElevation >= 1.0f)
+                    fxGoingUp = false;
+            }
+            else
+            {
+                fxElevation -= dt;
+                if (fxElevation <= 0.0f)
+                    fxGoingUp = true;
+            }
+
             fxAngle += dt * fxSpeed;
-            fxObj.SetLocalPosition(Victim.Position + new Vec3((float)Math.Cos(fxAngle)*fxRadius, (float)Math.Sin(fxAngle)*fxRadius, fxElevation));
+            Vec3 mountFixPos = Victim.HasMount ? new Vec3() : new Vec3(0, 0, 1f);
+            fxObj.SetLocalPosition(Victim.Position + mountFixPos + new Vec3((float)Math.Cos(fxAngle)*fxRadius, (float)Math.Sin(fxAngle)*fxRadius, fxElevation));
         }
     }
 }

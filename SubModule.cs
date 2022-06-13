@@ -23,13 +23,6 @@ namespace MagicSpells
             mission.AddMissionBehavior(new MagicMissionLogic());
         }
 
-        public static void AgentsTick(float dt)
-        {
-            foreach (KeyValuePair<Agent, List<EffectData>> kvp in ActiveAgentEffects.ToList())
-                foreach (EffectData effect in kvp.Value.ToList())
-                    effect.PerformTick(dt);
-        }
-
         public static void AddEffectToAgentsNear(Agent attacker, Vec3 position, string spellName, bool needsSameSide, float radius = 5.0f)
         {
             foreach (Agent agent in Mission.Current.AllAgents.ToList())
@@ -76,30 +69,39 @@ namespace MagicSpells
 
         public static EffectData? GetSpellEffectData(Agent attacker, Agent victim, string spellName)
         {
+            /* psys_campfire = nice tiny fire
+             * psys_blaze_1, prt_torch_flame = tiny flame with a lot of smoke
+             * psys_sea_foam_a = kind of web like
+             * sea_side_water_splash = forceful impact into ground / USE FOR SLOW
+             * main_menu_fast_smoke = Small amount of smoke
+             * torch_burning_fire_smoke = medium amount of smoke
+             * psys_bug_fly_1 = yellowish tiny particles / USE FOR HEALING
+             * 
+             * */
             switch (spellName)
             {
                 case "Spell Healing Bolt":
-                    return new EffectData(attacker, victim, "psys_campfire", (affectedAgent) =>
+                    return new EffectData(attacker, victim, "psys_bug_fly_1", (affectedAgent) =>
                     {
                         Utils.ModAgentHealth(affectedAgent, 10.0f);
                     });
                 case "Spell Healing Aura":
-                    return new EffectData(attacker, victim, "psys_campfire", (affectedAgent) =>
+                    return new EffectData(attacker, victim, "psys_bug_fly_1", (affectedAgent) =>
                     {
                         Utils.ModAgentHealth(affectedAgent, 10.0f);
                     }, 15.0f, 2.0f);
                 case "Spell Mass Healing":
-                    return new EffectData(attacker, victim, "psys_campfire", (affectedAgent) =>
+                    return new EffectData(attacker, victim, "psys_bug_fly_1", (affectedAgent) =>
                     {
                         Utils.ModAgentHealth(affectedAgent, 10.0f);
                     });
                 case "Spell Fear":
-                    return new EffectData(attacker, victim, "psys_campfire", (affectedAgent) =>
+                    return new EffectData(attacker, victim, "main_menu_fast_smoke", (affectedAgent) =>
                     {
                         affectedAgent.SetMorale(affectedAgent.GetMorale() - 10.0f);
                     });
                 case "Spell Slow":
-                    return new EffectData(attacker, victim, "psys_campfire", (affectedAgent) =>
+                    return new EffectData(attacker, victim, "sea_side_water_splash", (affectedAgent) =>
                     {
                         SavedVarsManager.AddAgentVar(affectedAgent, "originalMaxMoveSpeed", affectedAgent.GetMaximumSpeedLimit());
                         affectedAgent.SetMaximumSpeedLimit(1.0f, false);
