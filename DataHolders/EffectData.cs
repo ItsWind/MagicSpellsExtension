@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.Library;
@@ -20,7 +16,7 @@ namespace MagicSpells.DataHolders
 
         private GameEntity fxObj;
         private float repeatEvery;
-
+        
         public EffectData(Agent attacker, Agent victim, string fxName, Action<Agent> func, float until = 1.5f, float repeat = 0.0f,
             Action<Agent>? stopFunc = null)
         {
