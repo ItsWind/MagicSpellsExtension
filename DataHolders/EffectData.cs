@@ -29,8 +29,7 @@ namespace MagicSpells.DataHolders
             TimeLeft = until;
             repeatEvery = repeat;
 
-            if (repeatEvery <= 0.0f)
-                PerformFunc(Victim);
+            PerformFunc(Victim);
 
             MatrixFrame mf = new MatrixFrame(Mat3.Identity, new Vec3());
             ParticleSystem.CreateParticleSystemAttachedToEntity(fxName, fxObj, ref mf);
@@ -39,7 +38,7 @@ namespace MagicSpells.DataHolders
         private float repeatTimer = 0.0f;
         public void PerformTick(float dt)
         {
-            fxObj.SetLocalPosition(Victim.Position);
+            this.setFXObjPos(dt);
 
             repeatTimer += dt;
             if (repeatEvery > 0.0f && repeatTimer >= repeatEvery)
@@ -54,6 +53,16 @@ namespace MagicSpells.DataHolders
                 fxObj.Remove(0);
                 SubModule.RemoveEffectFromAgent(Victim, this);
             }
+        }
+
+        private float fxElevation = 0.5f;
+        private float fxSpeed = 7.0f;
+        private float fxRadius = 0.5f;
+        private float fxAngle;
+        private void setFXObjPos(float dt)
+        {
+            fxAngle += dt * fxSpeed;
+            fxObj.SetLocalPosition(Victim.Position + new Vec3((float)Math.Cos(fxAngle)*fxRadius, (float)Math.Sin(fxAngle)*fxRadius, fxElevation));
         }
     }
 }

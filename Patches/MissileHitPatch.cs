@@ -42,6 +42,9 @@ namespace MagicSpells.Patches
         private static void Postfix(Mission __instance, ref AttackCollisionData collisionData, Agent attacker, Agent victim, Vec3 missilePosition)
         {
             Dictionary<int, Mission.Missile> missiles = Traverse.Create(__instance).Field("_missiles").GetValue() as Dictionary<int, Mission.Missile>;
+            if (missiles == null)
+                return;
+
             MissionWeapon weaponUsed = missiles[collisionData.AffectorWeaponSlotOrMissileIndex].Weapon;
             if (Utils.IsMissionWeaponSpell(weaponUsed))
             {
