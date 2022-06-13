@@ -47,10 +47,7 @@ namespace MagicSpells
             if (victim.IsHuman)
             {
                 bool agentsOnSameSide = attacker.Team.Side.Equals(victim.Team.Side);
-                Utils.PrintToMessages(agentsOnSameSide.ToString());
-                Utils.PrintToMessages(needsSameSide.ToString());
                 bool canAddEffect = needsSameSide == agentsOnSameSide;
-                Utils.PrintToMessages(canAddEffect.ToString());
                 if (canAddEffect)
                 {
                     try
@@ -85,31 +82,26 @@ namespace MagicSpells
                 case "Spell Healing Bolt":
                     return new EffectData(attacker, victim, "psys_campfire", (affectedAgent) =>
                     {
-                        Utils.PrintToMessages("healing bolt healing");
                         Utils.ModAgentHealth(affectedAgent, 10.0f);
                     });
                 case "Spell Healing Aura":
                     return new EffectData(attacker, victim, "psys_campfire", (affectedAgent) =>
                     {
-                        Utils.PrintToMessages("healing aura healing");
                         Utils.ModAgentHealth(affectedAgent, 10.0f);
                     }, 15.0f, 2.0f);
                 case "Spell Mass Healing":
                     return new EffectData(attacker, victim, "psys_campfire", (affectedAgent) =>
                     {
-                        Utils.PrintToMessages("mass healing");
                         Utils.ModAgentHealth(affectedAgent, 10.0f);
                     });
                 case "Spell Fear":
                     return new EffectData(attacker, victim, "psys_campfire", (affectedAgent) =>
                     {
-                        Utils.PrintToMessages("fear");
                         affectedAgent.SetMorale(affectedAgent.GetMorale() - 10.0f);
                     });
                 case "Spell Slow":
                     return new EffectData(attacker, victim, "psys_campfire", (affectedAgent) =>
                     {
-                        Utils.PrintToMessages("slow");
                         SavedVarsManager.AddAgentVar(affectedAgent, "originalMaxMoveSpeed", affectedAgent.GetMaximumSpeedLimit());
                         affectedAgent.SetMaximumSpeedLimit(1.0f, false);
                     }, 5.0f, 0.1f, (affectedAgent) =>
