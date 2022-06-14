@@ -13,8 +13,11 @@ namespace MagicSpells
             "Set the base heal amount. Default is 10\n" +
             "baseHealAmount=10.0\n\n" +
 
-            "Displays all healing amounts. Mainly for debugging purposes. Default is 0. Set to 1 to enable.\n" +
-            "debugDisplayHealAmounts=0.0\n\n";
+            "Set the base fear morale reduction amount. Default is 10\n" +
+            "baseFearAmount=10.0\n\n" +
+
+            "Set the base slow amount. Lower is slower. Default is 1\n" +
+            "baseSlowAmount=1.0\n\n";
 
         private void CreateConfigFile()
         {

@@ -14,6 +14,7 @@ namespace MagicSpells.DataHolders
         public float TimeLeft;
         public Action<Agent>? StopFunc;
 
+        private string sndString;
         private bool sndLoops;
         private SoundEvent? sndEvent;
         private GameEntity fxObj;
@@ -29,16 +30,8 @@ namespace MagicSpells.DataHolders
             TimeLeft = until;
             repeatEvery = repeat;
             StopFunc = stopFunc;
-
-            if (soundString != "")
-            {
-                sndLoops = soundLoops;
-                int sndEventIdFromString = SoundEvent.GetEventIdFromString(soundString);
-                sndEvent = SoundEvent.CreateEvent(sndEventIdFromString, Mission.Current.Scene);
-                sndEvent.PlayInPosition(victim.Position);
-            }
-            else
-                sndEvent = null;
+            sndString = soundString;
+            sndLoops = soundLoops;
         }
 
         private void Init()
@@ -48,20 +41,29 @@ namespace MagicSpells.DataHolders
             fxObj = GameEntity.CreateEmpty(Mission.Current.Scene);
             MatrixFrame mf = new MatrixFrame(Mat3.Identity, new Vec3());
             ParticleSystem.CreateParticleSystemAttachedToEntity(FXName, fxObj, ref mf);
+
+            if (sndString != "")
+            {
+                int sndEventIdFromString = SoundEvent.GetEventIdFromString(sndString);
+                sndEvent = SoundEvent.CreateEvent(sndEventIdFromString, Mission.Current.Scene);
+                sndEvent.PlayInPosition(Victim.Position);
+            }
+            else
+                sndEvent = null;
         }
 
         private float repeatTimer = 0.0f;
         public void PerformTick(float dt)
         {
+            if (fxObj == null)
+                Init();
+
             if (sndEvent != null)
             {
                 sndEvent.SetPosition(Victim.Position);
                 if (sndLoops && !sndEvent.IsPlaying())
                     sndEvent.Play();
             }
-
-            if (fxObj == null)
-                Init();
 
             this.setFXObjPos(dt);
 

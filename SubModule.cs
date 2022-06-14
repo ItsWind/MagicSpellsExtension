@@ -10,7 +10,7 @@ namespace MagicSpells
 {
     public class SubModule : MBSubModuleBase
     {
-        //public static Config Config = new Config();
+        public static Config Config = new Config();
         public static Dictionary<Agent, List<EffectData>> ActiveAgentEffects = new();
 
         protected override void OnSubModuleLoad()
@@ -26,18 +26,19 @@ namespace MagicSpells
         public static void AddEffectToAgentsNear(Agent attacker, Vec3 position, string spellName, bool needsSameSide, float radius = 5.0f)
         {
             foreach (Agent agent in Mission.Current.AllAgents.ToList())
-                if (agent.Position.Distance(position) <= radius)
+                if (agent.IsHuman && agent.Position.Distance(position) <= radius)
                     SubModule.AddEffectToAgent(attacker, agent, spellName, needsSameSide);
         }
 
         public static void AddEffectToAgent(Agent attacker, Agent victim, string spellName, bool needsSameSide)
         {
-            EffectData? effect = SubModule.GetSpellEffectData(attacker, victim, spellName);
-            if (effect == null)
-                return;
-
-            if (victim.IsHuman)
+            if (victim.IsHuman && victim.IsActive())
             {
+                EffectData? effect = SubModule.GetSpellEffectData(attacker, victim, spellName);
+                if (effect == null)
+                    return;
+
+            
                 bool agentsOnSameSide = attacker.Team.Side.Equals(victim.Team.Side);
                 bool canAddEffect = needsSameSide == agentsOnSameSide;
                 if (canAddEffect)
@@ -83,29 +84,30 @@ namespace MagicSpells
                 case "Spell Healing Bolt":
                     return new EffectData(attacker, victim, "psys_bug_fly_1", (affectedAgent) =>
                     {
-                        Utils.ModAgentHealth(affectedAgent, 10.0f);
-                    }, "magicspells/effect/heal", true);
+                        Utils.ModAgentHealth(affectedAgent, (float)SubModule.Config.GetKeyValue("baseHealAmount"));
+                    }, "magicspells/effect/heal", false);
                 case "Spell Healing Aura":
                     return new EffectData(attacker, victim, "psys_bug_fly_1", (affectedAgent) =>
                     {
-                        Utils.ModAgentHealth(affectedAgent, 10.0f);
+                        Utils.ModAgentHealth(affectedAgent, (float)SubModule.Config.GetKeyValue("baseHealAmount"));
                     }, "magicspells/effect/heal", true, 15.0f, 2.0f);
                 case "Spell Mass Healing":
                     return new EffectData(attacker, victim, "psys_bug_fly_1", (affectedAgent) =>
                     {
-                        Utils.ModAgentHealth(affectedAgent, 10.0f);
-                    }, "magicspells/effect/heal", true);
+                        Utils.ModAgentHealth(affectedAgent, (float)SubModule.Config.GetKeyValue("baseHealAmount"));
+                    }, "magicspells/effect/heal", false);
                 case "Spell Fear":
                     return new EffectData(attacker, victim, "main_menu_fast_smoke", (affectedAgent) =>
                     {
-                        affectedAgent.SetMorale(affectedAgent.GetMorale() - 10.0f);
-                    }, "magicspells/effect/heal", true);
+                        affectedAgent.SetMorale(affectedAgent.GetMorale() - (float)SubModule.Config.GetKeyValue("baseFearAmount"));
+                    }, "magicspells/effect/fear", false);
                 case "Spell Slow":
                     return new EffectData(attacker, victim, "sea_side_water_splash", (affectedAgent) =>
                     {
                         SavedVarsManager.AddAgentVar(affectedAgent, "originalMaxMoveSpeed", affectedAgent.GetMaximumSpeedLimit());
-                        affectedAgent.SetMaximumSpeedLimit(1.0f, false);
-                    }, "magicspells/effect/heal", true, 5.0f, 0.1f, (affectedAgent) =>
+                        Utils.PrintToMessages(SubModule.Config.GetKeyValue("baseSlowAmount").ToString());
+                        affectedAgent.SetMaximumSpeedLimit((float)SubModule.Config.GetKeyValue("baseSlowAmount"), false);
+                    }, "magicspells/effect/slow", false, 5.0f, 0.1f, (affectedAgent) =>
                     {
                         float? setTo = (float)SavedVarsManager.UseAgentVar(affectedAgent, "originalMaxMoveSpeed");
                         if (setTo != null)
