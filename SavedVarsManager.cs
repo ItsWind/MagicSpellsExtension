@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TaleWorlds.MountAndBlade;
 
 namespace MagicSpells
@@ -35,6 +36,21 @@ namespace MagicSpells
             {
                 return null;
             }
+        }
+
+        public static bool AgentHasEffectVar(Agent agent, string effectVarIdBase)
+        {
+            try
+            {
+                foreach (KeyValuePair<string, Object> kvp in SavedVars[agent].ToList())
+                    if (kvp.Key.Contains(effectVarIdBase))
+                        return true;
+            }
+            catch (KeyNotFoundException e)
+            {
+                return false;
+            }
+            return false;
         }
     }
 }

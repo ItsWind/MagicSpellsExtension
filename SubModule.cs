@@ -70,6 +70,7 @@ namespace MagicSpells
 
         public static EffectData? GetSpellEffectData(Agent attacker, Agent victim, string spellName)
         {
+            Guid uuid = Guid.NewGuid();
             /* psys_campfire = nice tiny fire
              * psys_blaze_1, prt_torch_flame = tiny flame with a lot of smoke
              * psys_sea_foam_a = kind of web like
@@ -86,26 +87,29 @@ namespace MagicSpells
                     {
                         Utils.ModAgentHealth(affectedAgent, (float)SubModule.Config.GetKeyValue("baseHealAmount"));
                     }, "magicspells/effect/heal", false);
+
                 case "Spell Healing Aura":
                     return new EffectData(attacker, victim, "psys_bug_fly_1", (affectedAgent) =>
                     {
                         Utils.ModAgentHealth(affectedAgent, (float)SubModule.Config.GetKeyValue("baseHealAmount"));
                     }, "magicspells/effect/heal", true, 15.0f, 2.0f);
+
                 case "Spell Mass Healing":
                     return new EffectData(attacker, victim, "psys_bug_fly_1", (affectedAgent) =>
                     {
                         Utils.ModAgentHealth(affectedAgent, (float)SubModule.Config.GetKeyValue("baseHealAmount"));
                     }, "magicspells/effect/heal", false);
+
                 case "Spell Fear":
                     return new EffectData(attacker, victim, "main_menu_fast_smoke", (affectedAgent) =>
                     {
                         affectedAgent.SetMorale(affectedAgent.GetMorale() - (float)SubModule.Config.GetKeyValue("baseFearAmount"));
                     }, "magicspells/effect/fear", false);
+
                 case "Spell Slow":
                     return new EffectData(attacker, victim, "sea_side_water_splash", (affectedAgent) =>
                     {
                         SavedVarsManager.AddAgentVar(affectedAgent, "originalMaxMoveSpeed", affectedAgent.GetMaximumSpeedLimit());
-                        Utils.PrintToMessages(SubModule.Config.GetKeyValue("baseSlowAmount").ToString());
                         affectedAgent.SetMaximumSpeedLimit((float)SubModule.Config.GetKeyValue("baseSlowAmount"), false);
                     }, "magicspells/effect/slow", false, 5.0f, 0.1f, (affectedAgent) =>
                     {
@@ -113,6 +117,28 @@ namespace MagicSpells
                         if (setTo != null)
                             affectedAgent.SetMaximumSpeedLimit((float)setTo, false);
                     });
+
+                case "Spell Break Armor":
+                    return new EffectData(attacker, victim, "psys_game_shield_break", (affectedAgent) =>
+                    {
+                        SavedVarsManager.AddAgentVar(affectedAgent, "checkEffectBreakArmor" + uuid, true);
+                    }, "magicspells/effect/slow", false, 5.0f, 0.0f, (affectedAgent) =>
+                    {
+                        SavedVarsManager.UseAgentVar(affectedAgent, "checkEffectBreakArmor" + uuid);
+                    });
+
+                case "Spell Stoneflesh":
+                    return new EffectData(attacker, victim, "main_menu_fast_smoke", (affectedAgent) =>
+                    {
+                        SavedVarsManager.AddAgentVar(affectedAgent, "checkEffectStoneflesh" + uuid, true);
+                    }, "magicspells/effect/slow", false, 5.0f, 0.0f, (affectedAgent) =>
+                    {
+                        SavedVarsManager.UseAgentVar(affectedAgent, "checkEffectStoneflesh" + uuid);
+                    });
+
+                case "Spell Fireball":
+                    return new EffectData(attacker, victim, "psys_campfire", (a) => { }, "", false, 10.0f);
+
                 default:
                     return null;
             }

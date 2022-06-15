@@ -1,7 +1,6 @@
 ﻿using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static TaleWorlds.Core.ItemObject;
-using static TaleWorlds.MountAndBlade.Agent;
 
 namespace MagicSpells
 {
@@ -18,13 +17,6 @@ namespace MagicSpells
         public static bool IsMissionWeaponSpell(MissionWeapon weapon)
         {
             if (weapon.Item.ItemType.Equals(ItemTypeEnum.Thrown) && weapon.Item.Name.ToString().Contains("Spell "))
-                return true;
-            return false;
-        }
-
-        public static bool DoesMissionWeaponHeal(MissionWeapon weapon)
-        {
-            if (weapon.Item.ItemType.Equals(ItemTypeEnum.Thrown) && weapon.Item.Name.ToString().Contains("Healing"))
                 return true;
             return false;
         }

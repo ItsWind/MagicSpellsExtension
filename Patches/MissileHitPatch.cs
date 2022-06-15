@@ -1,6 +1,4 @@
 ﻿using HarmonyLib;
-using MagicSpells.DataHolders;
-using System;
 using System.Collections.Generic;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -16,6 +14,27 @@ namespace MagicSpells.Patches
             AOE
         }
 
+        enum SpellHarm
+        {
+            Debuff,
+            Buff
+        }
+
+        private static Dictionary<string, SpellHarm> spellHarms = new Dictionary<string, SpellHarm>
+        {
+            { "Spell Stoneflesh",
+                SpellHarm.Buff
+            },
+            { "Spell Healing Bolt",
+                SpellHarm.Buff
+            },
+            { "Spell Healing Aura",
+                SpellHarm.Buff
+            },
+            { "Spell Mass Healing",
+                SpellHarm.Buff
+            }
+        };
         private static Dictionary<string, SpellType> spellTypes = new Dictionary<string, SpellType>
         {
             { "Spell Mass Healing",
@@ -27,11 +46,14 @@ namespace MagicSpells.Patches
             { "Spell Slow",
                 SpellType.AOE
             },
-            { "Spell Healing Bolt",
-                SpellType.Direct
+            { "Spell Fireball",
+                SpellType.AOE
             },
-            { "Spell Healing Aura",
-                SpellType.Direct
+            { "Spell Break Armor",
+                SpellType.AOE
+            },
+            { "Spell Stoneflesh",
+                SpellType.AOE
             }
         };
 
@@ -46,11 +68,17 @@ namespace MagicSpells.Patches
             if (Utils.IsMissionWeaponSpell(weaponUsed))
             {
                 string weaponUsedName = weaponUsed.Item.Name.ToString();
-                SpellType type = SpellType.Direct;
 
+                SpellType type = SpellType.Direct;
+                SpellHarm harm = SpellHarm.Debuff;
                 try
                 {
                     type = spellTypes[weaponUsedName];
+                }
+                catch (KeyNotFoundException) { }
+                try
+                {
+                    harm = spellHarms[weaponUsedName];
                 }
                 catch (KeyNotFoundException) { }
 
@@ -61,7 +89,7 @@ namespace MagicSpells.Patches
                             if (victim == null)
                                 return;
 
-                            SubModule.AddEffectToAgent(attacker, victim, weaponUsedName, Utils.DoesMissionWeaponHeal(weaponUsed));
+                            SubModule.AddEffectToAgent(attacker, victim, weaponUsedName, harm == SpellHarm.Buff ? true : false);
                             break;
                         }
                     case SpellType.AOE:
@@ -69,7 +97,7 @@ namespace MagicSpells.Patches
                             if (missilePosition == null)
                                 return;
 
-                            SubModule.AddEffectToAgentsNear(attacker, missilePosition, weaponUsedName, Utils.DoesMissionWeaponHeal(weaponUsed));
+                            SubModule.AddEffectToAgentsNear(attacker, missilePosition, weaponUsedName, harm == SpellHarm.Buff ? true : false);
                             break;
                         }
                 }

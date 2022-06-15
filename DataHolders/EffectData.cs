@@ -86,8 +86,8 @@ namespace MagicSpells.DataHolders
             }
         }
 
-        private bool fxGoingUp = false;
-        private float fxElevation = 0.5f;
+        private bool fxGoingUp = true;
+        private float fxElevation = 0.0f;
         private float fxSpeed = 7.5f;
         private float fxRadius = 0.5f;
         private float fxAngle;
@@ -96,7 +96,7 @@ namespace MagicSpells.DataHolders
             if (fxGoingUp)
             {
                 fxElevation += dt;
-                if (fxElevation >= 1.0f)
+                if (fxElevation >= 1.5f)
                     fxGoingUp = false;
             }
             else
@@ -107,7 +107,7 @@ namespace MagicSpells.DataHolders
             }
 
             fxAngle += dt * fxSpeed;
-            Vec3 mountFixPos = Victim.HasMount ? new Vec3() : new Vec3(0, 0, 1f);
+            Vec3 mountFixPos = Victim.HasMount ? new Vec3(0, 0, 1.5f) : new Vec3();
             fxObj.SetLocalPosition(Victim.Position + mountFixPos + new Vec3((float)Math.Cos(fxAngle)*fxRadius, (float)Math.Sin(fxAngle)*fxRadius, fxElevation));
         }
     }
